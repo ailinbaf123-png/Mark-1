@@ -1,0 +1,82 @@
+using System;
+
+public class CourseRegistration
+{
+    private string studentName;
+    private int creditHours;
+
+    public string StudentName
+    {
+        get => studentName;
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException("StudentName cannot be empty.");
+            }
+            studentName = value;
+        }
+    }
+
+    // CreditHours property with validation
+    public int CreditHours
+    {
+        get => creditHours;
+        set
+        {
+            if (value < 1 || value > 21)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), "CreditHours must be between 1 and 21.");
+            }
+            creditHours = value;
+        }
+    }
+
+    public CourseRegistration() : this("Default Student", 3)
+    {
+    }
+
+    public CourseRegistration(string studentName) : this(studentName, 3)
+    {
+    }
+
+    public CourseRegistration(string studentName, int creditHours)
+    {
+        StudentName = studentName;
+        CreditHours = creditHours;
+    }
+
+    public void DisplayInfo()
+    {
+        Console.WriteLine($"Student Name: {StudentName}, Credit Hours: {CreditHours}");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        try
+        {
+            Console.Write("Enter student name: ");
+            string nameInput = Console.ReadLine();
+
+            Console.Write("Enter credit hours: ");
+            string hoursInput = Console.ReadLine();
+
+            if (int.TryParse(hoursInput, out int hours))
+            {
+                CourseRegistration registration = new CourseRegistration(nameInput, hours);
+                registration.DisplayInfo();
+            }
+            else
+            {
+                Console.WriteLine("Invalid number format for credit hours.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
